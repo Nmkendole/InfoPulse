@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { Country, State, City } from "country-state-city";
 import axios from "axios";
@@ -13,15 +14,12 @@ import {
 import WeatherAnimation from './WeatherAnimation';
 import './Weather.css'; 
 
-// We only need WiHumidity and WiRaindrop from this library now
+// Only import used icons
 import { WiHumidity, WiRaindrop } from "react-icons/wi";
-
-
-// We still need these icons for the hourly forecast and description
 import { BsSun, BsMoonStars, BsCloudRain, BsSnow, BsCloud, BsLightning } from "react-icons/bs";
 
 // Register Chart.js components
-ChartJS.register( BarElement, CategoryScale, LinearScale, Tooltip, Legend );
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 // SVG Icons
 const IconFeelsLike = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M12 16.2c-1.9 0-3.5-1.6-3.5-3.5 0-.6.1-1.1.4-1.6l-2.2-2.2c-.5.9-.7 1.9-.7 3.1 0 3.3 2.7 6 6 6s6-2.7 6-6c0-1.1-.3-2.1-.8-3l-2.1 2.1c.3.5.4 1 .4 1.5 0 1.9-1.6 3.5-3.5 3.5zM12 4c-1.9 0-3.5 1.6-3.5 3.5 0 .6.1 1.1.4 1.6L6.7 11.3c-.5-.9-.7-1.9-.7-3.1 0-3.3 2.7-6 6-6s6 2.7 6 6c0 1.1-.3 2.1-.8 3L15.1 9c.3-.5.4-1 .4-1.5 0-1.9-1.6-3.5-3.5-3.5z"/></svg>;
@@ -33,7 +31,7 @@ const IconSunset = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M4.8 
 const IconVisibility = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 12.5c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm0-8c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"/></svg>;
 const IconDewPoint = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M12 20.9c-3.1 0-5.6-2.5-5.6-5.6 0-2.8 2-5.1 4.6-5.5.5-2.5 2.7-4.4 5.4-4.4 3.1 0 5.6 2.5 5.6 5.6 0 .2 0 .4-.1.6h.1c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5h-12c-.2 0-.4-.1-.6-.1z"/></svg>;
 
-const WEATHER_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+const WEATHER_KEY = 'b808790cea09459fdcd355fdcc15e63c';
 
 const WeatherDashboard = () => {
   const [countries] = useState(Country.getAllCountries());
@@ -51,39 +49,85 @@ const WeatherDashboard = () => {
   const [isDaytime, setIsDaytime] = useState(true);
   
   useEffect(() => {
-    setSelectedState(""); setSelectedCity(""); setCities([]); setWeather(null); setError(null);
-    if (selectedCountry) { setStates(State.getStatesOfCountry(selectedCountry)); } else { setStates([]); }
+    setSelectedState(""); 
+    setSelectedCity(""); 
+    setCities([]); 
+    setWeather(null); 
+    setError(null);
+    if (selectedCountry) { 
+      setStates(State.getStatesOfCountry(selectedCountry)); 
+    } else { 
+      setStates([]); 
+    }
   }, [selectedCountry]);
 
   useEffect(() => {
-    setSelectedCity(""); setWeather(null); setError(null);
-    if (selectedCountry && selectedState) { setCities(City.getCitiesOfState(selectedCountry, selectedState)); } else { setCities([]); }
+    setSelectedCity(""); 
+    setWeather(null); 
+    setError(null);
+    if (selectedCountry && selectedState) { 
+      setCities(City.getCitiesOfState(selectedCountry, selectedState)); 
+    } else { 
+      setCities([]); 
+    }
   }, [selectedState, selectedCountry]);
 
   const fetchWeatherByCoords = useCallback(async (lat, lon) => {
-    setLoading(true); setError(null); setWeather(null); setForecast(null);
+    setLoading(true); 
+    setError(null); 
+    setWeather(null); 
+    setForecast(null);
     try {
-      const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_KEY}&units=metric`);
+      const weatherRes = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_KEY}&units=metric`
+      );
       setWeather(weatherRes.data);
-      const forecastRes = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${WEATHER_KEY}&units=metric`);
+      
+      // Fetch OneCall API for forecast data
+      const forecastRes = await axios.get(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&appid=${WEATHER_KEY}&units=metric`
+      );
       setForecast(forecastRes.data);
-    } catch (err) { setError(err.response?.data?.message || err.message || "Failed to fetch weather data."); } finally { setLoading(false); }
+    } catch (err) { 
+      setError(err.response?.data?.message || err.message || "Failed to fetch weather data."); 
+    } finally { 
+      setLoading(false); 
+    }
   }, []);
 
   const fetchWeatherData = useCallback(async () => {
     if (!selectedCity || !selectedCountry) return;
-    setLoading(true); setError(null); setWeather(null); setForecast(null);
+    setLoading(true); 
+    setError(null); 
+    setWeather(null); 
+    setForecast(null);
     try {
-      const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(selectedCity)},${selectedCountry}&appid=${WEATHER_KEY}&units=metric`);
+      const weatherRes = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(selectedCity)},${selectedCountry}&appid=${WEATHER_KEY}&units=metric`
+      );
       setWeather(weatherRes.data);
+      
       const { lat, lon } = weatherRes.data.coord;
-      const forecastRes = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${WEATHER_KEY}&units=metric`);
+      const forecastRes = await axios.get(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&appid=${WEATHER_KEY}&units=metric`
+      );
       setForecast(forecastRes.data);
-    } catch (err) { setError(err.response?.data?.message || err.message || "Failed to fetch weather data."); } finally { setLoading(false); }
+    } catch (err) { 
+      setError(err.response?.data?.message || err.message || "Failed to fetch weather data."); 
+    } finally { 
+      setLoading(false); 
+    }
   }, [selectedCity, selectedCountry]);
 
-  useEffect(() => { fetchWeatherData(); }, [fetchWeatherData]);
-  useEffect(() => { if (userLocation) { fetchWeatherByCoords(userLocation.lat, userLocation.lon); } }, [userLocation, fetchWeatherByCoords]);
+  useEffect(() => { 
+    fetchWeatherData(); 
+  }, [fetchWeatherData]);
+  
+  useEffect(() => { 
+    if (userLocation) { 
+      fetchWeatherByCoords(userLocation.lat, userLocation.lon); 
+    } 
+  }, [userLocation, fetchWeatherByCoords]);
 
   useEffect(() => {
     if (weather) {
@@ -95,15 +139,36 @@ const WeatherDashboard = () => {
   const getForecastChartData = () => {
     if (!forecast || !forecast.daily) return { labels: [], datasets: [] };
     const dailyData = forecast.daily.slice(0, 8);
-    const labels = dailyData.map(day => new Date(day.dt * 1000).toLocaleDateString(undefined, { weekday: 'short' }));
+    const labels = dailyData.map(day => 
+      new Date(day.dt * 1000).toLocaleDateString(undefined, { weekday: 'short' })
+    );
     const temperatures = dailyData.map(day => Math.round(day.temp.max));
-    const precipitation = dailyData.map(day => (day.rain || 0).toFixed(2));
+    const precipitation = dailyData.map(day => (day.rain || 0).toFixed(1));
+    
     return {
-        labels,
-        datasets: [
-            { label: "Temperature (°C)", data: temperatures, backgroundColor: 'rgba(88, 88, 114, 0.6)', borderColor: 'rgba(110, 110, 140, 1)', borderWidth: 1, type: 'bar', yAxisID: "y", order: 2 },
-            { label: "Precipitation (mm)", data: precipitation, backgroundColor: 'rgba(54, 112, 165, 0.8)', borderColor: 'rgba(75, 137, 199, 1)', borderWidth: 1, type: 'bar', yAxisID: "y1", order: 1 }
-        ],
+      labels,
+      datasets: [
+        { 
+          label: "Temperature (°C)", 
+          data: temperatures, 
+          backgroundColor: 'rgba(88, 88, 114, 0.6)', 
+          borderColor: 'rgba(110, 110, 140, 1)', 
+          borderWidth: 1, 
+          type: 'bar', 
+          yAxisID: "y", 
+          order: 2 
+        },
+        { 
+          label: "Precipitation (mm)", 
+          data: precipitation, 
+          backgroundColor: 'rgba(54, 112, 165, 0.8)', 
+          borderColor: 'rgba(75, 137, 199, 1)', 
+          borderWidth: 1, 
+          type: 'bar', 
+          yAxisID: "y1", 
+          order: 1 
+        }
+      ],
     };
   };
   
@@ -113,43 +178,165 @@ const WeatherDashboard = () => {
       time: new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
       temp: Math.round(item.temp),
       icon: item.weather[0].main,
-      precipitation: (item.rain?.['1h'] || 0).toFixed(2)
+      precipitation: (item.rain?.['1h'] || 0).toFixed(1)
     }));
   };
 
   const WeatherIcon = ({ condition, size = 24 }) => {
-    const iconStyle = { fill: 'none', stroke: '#a0d0ff', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const iconStyle = { 
+      fill: 'none', 
+      stroke: '#a0d0ff', 
+      strokeWidth: 1.5, 
+      strokeLinecap: 'round', 
+      strokeLinejoin: 'round' 
+    };
+    
     const iconMap = {
       Clear: isDaytime ? <BsSun size={size} color="#FFD700" /> : <BsMoonStars size={size} color="#f0f0f0" />,
-      Clouds: <BsCloud size={size} style={iconStyle} />, Rain: <BsCloudRain size={size} style={iconStyle} />, Snow: <BsSnow size={size} style={iconStyle} />,
-      Thunderstorm: <BsLightning size={size} style={iconStyle} />, Drizzle: <WiRaindrop size={size} style={{color: "#a0d0ff"}} />, Mist: <WiHumidity size={size} style={{color: "#a0d0ff"}} />,
+      Clouds: <BsCloud size={size} style={iconStyle} />, 
+      Rain: <BsCloudRain size={size} style={iconStyle} />, 
+      Snow: <BsSnow size={size} style={iconStyle} />,
+      Thunderstorm: <BsLightning size={size} style={iconStyle} />, 
+      Drizzle: <WiRaindrop size={size} style={{color: "#a0d0ff"}} />, 
+      Mist: <WiHumidity size={size} style={{color: "#a0d0ff"}} />,
     };
+    
     return iconMap[condition] || <BsCloud size={size} style={iconStyle} />;
   };
 
+  const getUvDescription = (uv) => {
+    if (uv <= 2) return { status: "Low", description: "Low risk from UV rays" };
+    if (uv <= 5) return { status: "Moderate", description: "Moderate risk from UV rays" };
+    if (uv <= 7) return { status: "High", description: "High risk from UV rays" };
+    if (uv <= 10) return { status: "Very High", description: "Very high risk from UV rays" };
+    return { status: "Extreme", description: "Extreme risk from UV rays" };
+  };
+
   const forecastChartOptions = {
-    responsive: true, maintainAspectRatio: false,
+    responsive: true, 
+    maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', align: 'end', labels: { color: '#e0f7fa', boxWidth: 20, padding: 20, font: { size: 14, family: "'Courier New', monospace" } } },
-      tooltip: { backgroundColor: 'rgba(0,0,0,0.7)', titleFont: { size: 14 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 4, }
+      legend: { 
+        position: 'top', 
+        align: 'end', 
+        labels: { 
+          color: '#e0f7fa', 
+          boxWidth: 20, 
+          padding: 20, 
+          font: { size: 14, family: "'Courier New', monospace" } 
+        } 
+      },
+      tooltip: { 
+        backgroundColor: 'rgba(0,0,0,0.7)', 
+        titleFont: { size: 14 }, 
+        bodyFont: { size: 12 }, 
+        padding: 10, 
+        cornerRadius: 4 
+      }
     },
     scales: {
-      x: { grid: { color: 'rgba(0, 191, 255, 0.15)', borderColor: 'rgba(0, 191, 255, 0.2)' }, ticks: { color: '#bbdefb', font: { size: 12, family: "'Courier New', monospace" } } },
-      y: { type: 'linear', position: 'left', title: { display: true, text: 'Temperature (°C)', color: '#bbdefb' }, grid: { color: 'rgba(0, 191, 255, 0.15)', borderColor: 'rgba(0, 191, 255, 0.2)' }, ticks: { color: '#bbdefb' }, suggestedMax: 35 },
-      y1: { type: 'linear', position: 'right', title: { display: true, text: 'Precipitation (mm)', color: '#bbdefb' }, grid: { drawOnChartArea: false }, ticks: { color: '#bbdefb' }, suggestedMax: 4.5 },
+      x: { 
+        grid: { color: 'rgba(0, 191, 255, 0.15)', borderColor: 'rgba(0, 191, 255, 0.2)' }, 
+        ticks: { 
+          color: '#bbdefb', 
+          font: { size: 12, family: "'Courier New', monospace" } 
+        } 
+      },
+      y: { 
+        type: 'linear', 
+        position: 'left', 
+        title: { display: true, text: 'Temperature (°C)', color: '#bbdefb' }, 
+        grid: { color: 'rgba(0, 191, 255, 0.15)', borderColor: 'rgba(0, 191, 255, 0.2)' }, 
+        ticks: { color: '#bbdefb' }, 
+        suggestedMax: 35 
+      },
+      y1: { 
+        type: 'linear', 
+        position: 'right', 
+        title: { display: true, text: 'Precipitation (mm)', color: '#bbdefb' }, 
+        grid: { drawOnChartArea: false }, 
+        ticks: { color: '#bbdefb' }, 
+        suggestedMax: 4.5 
+      },
     },
   };
 
   const getLocation = () => {
-    if (!navigator.geolocation) { setError("Geolocation is not supported by your browser"); return; }
+    if (!navigator.geolocation) { 
+      setError("Geolocation is not supported by your browser"); 
+      return; 
+    }
+    
     setIsGeolocating(true);
     navigator.geolocation.getCurrentPosition(
-      (position) => { setUserLocation({ lat: position.coords.latitude, lon: position.coords.longitude }); setIsGeolocating(false); },
-      (error) => { setError("Unable to retrieve your location: " + error.message); setIsGeolocating(false); }
+      (position) => { 
+        setUserLocation({ 
+          lat: position.coords.latitude, 
+          lon: position.coords.longitude 
+        }); 
+        setIsGeolocating(false); 
+      },
+      (error) => { 
+        setError("Unable to retrieve your location: " + error.message); 
+        setIsGeolocating(false); 
+      }
     );
   };
 
-  // Main render logic
+  // Air Quality State
+  const [aqi, setAqi] = useState(null);
+  const [aqiStatus, setAqiStatus] = useState('');
+  const [aqiDescription, setAqiDescription] = useState('');
+  const AIR_QUALITY_API_KEY = 'b808790cea09459fdcd355fdcc15e63c';
+
+  useEffect(() => {
+    const fetchAQI = async () => {
+      if (weather && weather.coord) {
+        try {
+          const response = await axios.get(
+            `https://api.openweathermap.org/data/2.5/air_pollution?lat=${weather.coord.lat}&lon=${weather.coord.lon}&appid=${AIR_QUALITY_API_KEY}`
+          );
+          const aqiValue = response.data.list[0].main.aqi;
+          setAqi(aqiValue);
+          switch (aqiValue) {
+            case 1:
+              setAqiStatus('Good');
+              setAqiDescription('Air quality is satisfactory');
+              break;
+            case 2:
+              setAqiStatus('Fair');
+              setAqiDescription('Air quality is acceptable');
+              break;
+            case 3:
+              setAqiStatus('Moderate');
+              setAqiDescription('Moderate air pollution');
+              break;
+            case 4:
+              setAqiStatus('Poor');
+              setAqiDescription('Poor air quality, health risks');
+              break;
+            case 5:
+              setAqiStatus('Very Poor');
+              setAqiDescription('Very poor air quality, health warnings');
+              break;
+            default:
+              setAqiStatus('Unknown');
+              setAqiDescription('No data available');
+          }
+        } catch (error) {
+          setAqiStatus('Unavailable');
+          setAqiDescription('Unable to get air quality data');
+          setAqi(null);
+        }
+      } else {
+        setAqi(null); // Reset if no weather coordinates
+        setAqiStatus('');
+        setAqiDescription('');
+      }
+    };
+    fetchAQI();
+  }, [weather]);
+
   return (
     <div className="weather-container">
       <header className="weather-header">
@@ -195,7 +382,7 @@ const WeatherDashboard = () => {
               <div className="details-grid">
                   <div className="detail-item"><IconFeelsLike /><span>Feels Like</span><span className="value">{Math.round(weather.main.feels_like)}°C</span></div>
                   <div className="detail-item"><IconHumidity /><span>Humidity</span><span className="value">{weather.main.humidity}%</span></div>
-                  <div className="detail-item"><IconWind /><span>Wind</span><span className="value">{weather.wind.speed.toFixed(2)} m/s</span></div>
+                  <div className="detail-item"><IconWind /><span>Wind</span><span className="value">{weather.wind.speed.toFixed(1)} m/s</span></div>
                   <div className="detail-item"><IconPressure /><span>Pressure</span><span className="value">{weather.main.pressure} hPa</span></div>
               </div>
               <div className="details-grid-secondary">
@@ -226,13 +413,37 @@ const WeatherDashboard = () => {
             </div>
           </div>
 
+          {/* AIR QUALITY AND UV INDEX CARDS */}
+          <div className="weather-card">
+            <h2 className="card-title">AIR QUALITY</h2>
+            <div className="index-item">
+              <div className="index-value">{aqi !== null ? aqi : 'Loading...'}</div>
+              <div className="index-details">
+                <p className="index-label">Air Quality Index</p>
+                <p className="index-status">{aqiStatus}</p>
+                <p className="index-description">{aqiDescription}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="weather-card">
+            <h2 className="card-title">UV INDEX</h2>
+            <div className="index-item">
+              <div className="index-value">{forecast.current.uvi.toFixed(1)}</div>
+              <div className="index-details">
+                <p className="index-label">UV Exposure</p>
+                <p className="index-status">{getUvDescription(forecast.current.uvi).status}</p>
+                <p className="index-description">{getUvDescription(forecast.current.uvi).description}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* ENLARGED 8-DAY FORECAST CHART */}
           <div className="weather-card full-width-chart-card">
             <h2 className="card-title">8-DAY FORECAST</h2>
-            {forecast && (
-              <div className="forecast-chart-container">
-                <Bar data={getForecastChartData()} options={forecastChartOptions} />
-              </div>
-            )}
+            <div className="forecast-chart-container">
+              <Bar data={getForecastChartData()} options={forecastChartOptions} />
+            </div>
           </div>
         </>
       )}
