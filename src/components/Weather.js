@@ -277,8 +277,8 @@ const IconSunset = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M4.8 
 const IconVisibility = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 12.5c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm0-8c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"/></svg>;
 const IconDewPoint = (props) => <svg viewBox="0 0 24 24" {...props}><path d="M12 20.9c-3.1 0-5.6-2.5-5.6-5.6 0-2.8 2-5.1 4.6-5.5.5-2.5 2.7-4.4 5.4-4.4 3.1 0 5.6 2.5 5.6 5.6 0 .2 0 .4-.1.6h.1c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5h-12c-.2 0-.4-.1-.6-.1z"/></svg>;
 
-const WEATHER_KEY = 'process.env.REACT_APP_WEATHER_API_KEY';
-
+//const WEATHER_KEY = 'process.env.REACT_APP_WEATHER_API_KEY';
+const WEATHER_KEY = 'b808790cea09459fdcd355fdcc15e63c'; // Replace with your actual API key
 const WeatherDashboard = () => {
   const [countries] = useState(Country.getAllCountries());
   const [states, setStates] = useState([]);

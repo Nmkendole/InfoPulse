@@ -22,8 +22,8 @@ const News = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [categories, setCategories] = useState(defaultCategories);
 
-  const API_KEY = process.env.REACT_APP_THENEWSAPI_KEY;
-
+  //const API_KEY = process.env.REACT_APP_THENEWSAPI_KEY;
+  const API_KEY = 'CSnZ0yjPmZvtlK5I2oC7It9lFax39B5KrgDNKy7s'; // Replace with your actual API key
   const fetchNews = useCallback(async () => {
     if (!API_KEY) {
       setError("API Key is missing. Make sure it's set in your deployment environment variables.");
