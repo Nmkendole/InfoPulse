@@ -414,7 +414,9 @@ function Crypto() {
     const prompt = `# ${currentCoin.name} (${currentCoin.symbol.toUpperCase()}) Investment Analysis: A Beginner's Overview\n\n## Potential\n- Bulleted list of potential upsides.\n\n## Key Risks\n- Bulleted list of key risks.\n\n## Conclusion\n- A concluding paragraph.`;
     try {
         const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-        const apiKey = ' AIzaSyD_D7oeiDUeP17jyAR8wceh5XYeRTGlTQg';  
+
+        const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
         const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
