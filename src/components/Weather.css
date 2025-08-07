@@ -249,3 +249,94 @@
   }
   .weather-animation-container { min-height: 180px; }
 }
+
+/* Add these styles to your existing CSS file */
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.weather-card.index-card {
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1a2a6c, #0f172a);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.index-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.index-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #4f46e5, #42f4d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  min-width: 80px;
+  text-align: center;
+}
+
+.index-details {
+  flex: 1;
+}
+
+.index-label {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.index-status {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 0.25rem;
+}
+
+.index-description {
+  font-size: 0.9rem;
+  color: #a0aec0;
+  line-height: 1.4;
+}
+
+/* Larger chart container */
+.forecast-chart-container {
+  height: 380px;
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .index-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .forecast-chart-container {
+    height: 300px;
+  }
+}
+
+/* Animation for index cards */
+.weather-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25);
+}

@@ -39,7 +39,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="social-links">
           <a 
-            href="https://github.com/puneeth-vemuri/InfoPulse" 
+            href="https://github.com/Nmkendole/InfoPulse.git" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="GitHub Profile"
@@ -48,7 +48,7 @@ const Footer = () => {
           </a>
           {/* ⬇️ ADD THIS LINKEDIN LINK ⬇️ */}
           <a 
-            href="https://www.linkedin.com/in/puneethvemuri/" 
+            href="https://www.linkedin.com/in/nagamahesh-kendole-49b71b259/" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="LinkedIn Profile"
@@ -68,7 +68,7 @@ const Footer = () => {
         </div>
 
         <div className="copyright">
-          <p>© {new Date().getFullYear()} Puneeth Vemuri. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} Nagamahesh Kendole. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

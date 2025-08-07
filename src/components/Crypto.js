@@ -180,7 +180,7 @@ Please provide detailed points for each section.
 
     try {
         const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-        const apiKey = process.env.REACT_APP_GEMINI_API_KEY;  
+        const apiKey = ' AIzaSyD_D7oeiDUeP17jyAR8wceh5XYeRTGlTQg';  
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
         
         const response = await fetch(apiUrl, {
