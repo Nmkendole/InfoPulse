@@ -39,7 +39,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="social-links">
           <a 
-            href="https://github.com/Nmkendole/InfoPulse.git" 
+            href="https://github.com/Nmkendole/InfoPulse/" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="GitHub Profile"
@@ -48,7 +48,7 @@ const Footer = () => {
           </a>
           {/* ⬇️ ADD THIS LINKEDIN LINK ⬇️ */}
           <a 
-            href="https://www.linkedin.com/in/nagamahesh-kendole-49b71b259/" 
+            href="https://www.linkedin.com/in/nagamahesh-kendole-49b71b259" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="LinkedIn Profile"
